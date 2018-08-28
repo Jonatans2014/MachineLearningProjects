@@ -46,7 +46,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import re as re
+import seaborn as sns
 
+sns.set(style='white', context='notebook', palette='deep')
 # In[2]:
 
 
@@ -100,7 +102,24 @@ train[["Parch", "Survived"]].groupby(['Parch'], as_index=False).mean()
 
 # It`s noticeable that people who were with someone else wether siblings, spouse, parents or children, survived more than people who were alone 
 # 
+# Correlation matrix between numerical values (SibSp Parch Age and Fare values) and Survived 
+g = sns.heatmap(train[["Survived","SibSp","Parch","Age","Fare"]].corr(),annot=True, fmt = ".2f", cmap = "coolwarm")
 
+"""Only Fare feature seems to have a significative correlation with the survival probability.
+
+It doesn't mean that the other features are not usefull. Subpopulations in these features can be correlated with the survival. To determine this, we need to explore in detail these features"""
+
+
+g = sns.factorplot(x="SibSp",y="Survived",data=train,kind="bar", size = 6 , 
+palette = "muted")
+g.despine(left=True)
+g = g.set_ylabels("survival probability")
+
+
+
+g = sns.countplot(x="Title",data=dataset)
+g = plt.setp(g.get_xticklabels(), rotation=45) 
+"""There is 17 titles in the dataset, most of them are very rare and we can group them in 4 categories."""
 # In[8]:
 
 
